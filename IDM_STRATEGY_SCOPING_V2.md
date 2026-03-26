@@ -92,7 +92,7 @@ Understanding the existing platforms is essential before defining scope. The fol
 
 ### Overview
 
-Limit the project scope to **EUSP-managed platforms** — primarily JPIDM and APIDM. The immediate goal is to replace JPIDM (the entire platform, not MIM alone) and remove the Avanade operational dependency, while establishing a global standard provisioning pipeline for **full-time employees**.
+This pattern focuses on **EUSP-managed platforms** — primarily JPIDM and APIDM — with a strategy centered on **operational independence and incremental modernization**. Rather than treating platform replacement as a single disruptive project, EUSP will build an in-house AI DevOps capability to absorb Avanade's ¥100M/year operational role, then replatform JPIDM feature-by-feature as continuous Business As Usual (BAU) delivery. Each modernized feature will be designed for global scale from day one, progressively enabling consolidation of capabilities from other platforms like Passport and EINS. The outcome: by FY28, EUSP achieves full operational autonomy with a global-scale team managing all JPIDM features across all regions, without vendor dependency.
 
 ### Strategic Approach
 
