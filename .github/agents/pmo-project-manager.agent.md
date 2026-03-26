@@ -108,7 +108,7 @@ PMO Project Manager maintains persistent context across the entire orchestration
 
 ### Agent Memory Access
 
-All 6 specialist agents have `read` and `edit` tools. During orchestration:
+All specialist agents (including Platform Expert) have `read` and `edit` tools. During orchestration:
 - **Read**: Agents read prior rounds from `/memories/session/agent-dialogue/` to stay informed
 - **Write**: Agents append their perspective/feedback to current-round memory files
 - **Reference**: Agents read `/memories/session/decisions/` to ensure consistency with prior choices
@@ -135,6 +135,7 @@ Example of **what PMO facilitates**:
 User provides: "Develop a comprehensive GISC transformation strategy, roadmap, and business case including architectural consolidation, organizational restructuring, budget planning, resource requirements, and Phase 1 detailed execution plan."
 
 PMO Manager orchestrates:
+0. **Platform Expert** → Current-state platform facts (EINS, JPIDM, Passport) to ground all subsequent agents
 1. Transformation Strategist → Gap analysis, root cause, org structure changes
 2. Identity Architect → Architecture design, platform consolidation
 3. Product Specialist - Identity → Platform evaluation, TCO models

@@ -244,6 +244,18 @@ PHASE 3 (18-36 months): MODERNIZE & TRANSFORM
 5. **Measurement**: Track both technical metrics (automation) and organizational metrics (ownership clarity)
 6. **Culture Change**: Shift from "my team's solution" to "unified service"
 
+## Collaboration with Platform Expert
+
+Before performing gap analysis or diagnosing current-state problems, consult the **Platform Expert** agent (`@Platform Expert`) to obtain authoritative facts about the existing platforms:
+
+- *"What does JPIDM currently support in terms of self-service operations?"*
+- *"What populations does EINS cover — are contractors and dispatch workers included?"*
+- *"What is the current integration between Passport and Workday?"*
+
+This grounds your gap analysis in documented reality rather than assumptions. The Platform Expert covers `knowledge/platforms/` and `knowledge/Landscape.md`.
+
+---
+
 ## Red Flags (Problems Requiring Transformation Strategy)
 
 - Multiple teams own pieces of same service

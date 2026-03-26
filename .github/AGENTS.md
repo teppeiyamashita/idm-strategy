@@ -39,6 +39,31 @@ PMO Manager produces complete business case, roadmap, and Phase 1 execution plan
 
 ---
 
+### 0.5 Platform Expert
+**Specialty**: Current-state knowledge of existing identity platforms — EINS, JPIDM, and Passport (SailPoint)
+
+**Use When**:
+- You need accurate, documented facts about what EINS, JPIDM, or Passport actually does today
+- Comparing capabilities across existing platforms before designing a target architecture
+- Understanding integration points, data flows, and platform boundaries
+- Grounding strategy or architecture work in current-state reality
+- Answering "what does the platform currently support?" questions
+
+**Key Expertise**:
+- EINS: Global ID authority, workforce attribute aggregation, population coverage, integration interfaces
+- JPIDM: Japan self-service portal, AD/Exchange orchestration, technical stack (ASP.NET MVC 4 / VB.NET / SQL Server)
+- Passport (SailPoint IdentityIQ): IAM orchestration for AM/EU/SM, FTE vs contingent worker flows, Workday integration
+- Identity Landscape: Entra ID tenant composition (~250K objects), regional user distribution
+- Cross-platform feature map and capability boundaries
+
+**Scope Boundary**: Current-state only. Does not speculate about roadmaps or future capabilities.
+
+**Knowledge Base**: `knowledge/platforms/` and `knowledge/Landscape.md`
+
+**Typical Collaborators**: Identity Architect (feeds current-state into architecture design), Transformation Strategist (feeds current-state into gap analysis), Product Specialist - Identity (informs platform comparison)
+
+---
+
 ### 1. Transformation Strategist
 **Specialty**: Organizational transformation, systemic problem diagnosis, gap analysis, comprehensive change roadmaps
 
@@ -252,6 +277,9 @@ Used when user wants to coordinate agents individually rather than through PMO o
 
 ### Question: "I have a complex business initiative requiring strategy, architecture, planning, and business case"
 → **PMO Project Manager** (orchestrates ALL agents; gives you complete business case output)
+
+### Question: "What does EINS / JPIDM / Passport actually do today?"
+→ **Platform Expert** (authoritative current-state platform knowledge)
 
 ### Question: "How do we solve this complex organizational & technical problem?"
 → **Transformation Strategist** (diagnoses root causes and org structure needs)

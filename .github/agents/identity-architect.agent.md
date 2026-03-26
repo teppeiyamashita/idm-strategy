@@ -77,6 +77,8 @@ During multi-agent GISC transformation orchestration, Identity Architect leverag
 - **Round 7**: Final validation confirm architecture holds in `/memories/session/agent-dialogue/round-7-validation.md`
 
 **Calling Other Agents** (`agent` tool):
+- "@Platform Expert, what does JPIDM currently write to AD and what attributes does it manage? I need this before designing the replacement architecture."
+- "@Platform Expert, what are the exact integration interfaces EINS exposes to downstream systems?"
 - "@Product Specialist, I read your Round 2 brainstorm. Can SailPoint support distributed provisioning to regional Active Directories?"
 - "@DevOps Practice Lead, my architecture proposes cloud infrastructure. What's timeline and cost?"
 
