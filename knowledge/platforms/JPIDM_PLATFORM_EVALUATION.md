@@ -382,6 +382,60 @@ JPIDM requires replacement driven by:
 
 ---
 
+### 1.8 Okta Workforce Identity Cloud
+
+**Architecture**: Cloud-native identity platform (authentication, SSO, MFA, lifecycle management) with AD Agent for on-premises directory sync and Okta Workflows for process automation
+
+**Strengths**:
+- Industry-leading authentication, SSO, and MFA capabilities
+- Comprehensive REST APIs (Okta Management API, Events API)
+- Okta Workflows (low-code automation for identity lifecycle events)
+- Broad SaaS app connector ecosystem (7,000+ integrations)
+- Cloud-native SaaS (no infrastructure management)
+- Strong Entra ID / Azure AD federation support
+- Developer-friendly APIs (well-documented, SDKs available)
+- AI/ML-based risk scoring (Okta ThreatInsight)
+
+**Weaknesses**:
+- Authentication-first platform — **not designed for on-premises AD object management**
+- AD Agent provides directory sync (read/write for user attributes), but **does not manage AD security groups with expiration, computer accounts, room accounts, or shared mailboxes**
+- No native shared mailbox management (Exchange Online operations not supported)
+- External group expiration logic not native (requires custom Workflow or third-party)
+- Self-service portal (End-User Dashboard) is limited — not designed for JPIDM-style self-service group/mailbox operations
+- Limited customisation of end-user portal UI for Japan-specific workflows
+- High licensing cost at 67,000-user scale (authentication tier pricing applied to all managed identities)
+- Hybrid AD provisioning depth is shallow compared to Microsoft-native approach
+- Computer account management not supported
+- Resource/room account management not supported
+- Implementation complexity for JPIDM feature parity is high (custom Workflows + portal development required)
+
+**Hybrid AD Provisioning**: ⚠️ Fair (AD Agent syncs user attributes bidirectionally; does not manage group lifecycle, computer accounts, or Exchange objects)
+
+**Self-Service Portal**: ❌ Poor for JPIDM parity (End-User Dashboard is authentication-focused; complex group/mailbox self-service requires custom portal build)
+
+**API-First Readiness**: ✅ Excellent (Okta Management API is comprehensive and well-documented; industry-standard REST)
+
+**DevOps Operability**: ✅ Good (Terraform provider available, API-driven configuration, GitHub Actions integration)
+
+**Licensing Cost Estimate**:
+- Okta Workforce Identity Cloud (Lifecycle Management + Workflows tier): $7/user/month × 67,000 users × 12 = ¥816M/year
+- Okta Access Gateway (on-premises hybrid connectivity): ~¥10-15M/year (infrastructure + licensing)
+- Professional services (Okta SI partner, 6–9 months): ¥75–115M one-time
+- Custom portal development (group management, mailbox self-service): ¥30–50M one-time
+- Ongoing operations: ¥40–50M/year (vendor-dependent support + internal team)
+- **Total Year 1**: ¥971M–1.05B
+- **Total Year 2+**: ¥866–881M/year
+
+**Migration Approach Compatibility**: ⚠️ Fair (Okta Workflows supports incremental automation; however, AD object management gaps require significant custom development before any JPIDM feature cutover)
+
+**Risk Profile**:
+- High cost relative to ¥100M baseline
+- Medium-high implementation complexity (authentication strengths do not translate to AD management depth)
+- Low vendor lock-in for auth/SSO, but Okta-specific Workflows create operational dependency
+- High feature gap for JPIDM's core AD self-service capabilities
+
+---
+
 ## 2. Pricing Assumptions
 
 > All costs are estimates based on publicly available pricing, analyst benchmarks, and industry norms (March 2026). Exact vendor quotes will differ. FX rate assumed: **¥145 per USD**.
@@ -473,6 +527,17 @@ JPIDM requires replacement driven by:
 | **Total Year 1** | | **¥87–140M** |
 | **Total Year 2+** | | **¥37–60M/year** |
 
+#### Okta Workforce Identity Cloud
+| Cost Item | Assumption | Estimate |
+|-----------|-----------|---------|
+| Okta Workforce Identity Cloud (LCM + Workflows tier) | $7/user/month × 67,000 users × 12 months @ ¥145/$ | ¥816M/year |
+| Okta Access Gateway (on-premises hybrid connectivity) | Infrastructure + licensing for JP region | ¥10–15M/year |
+| Custom portal development (group mgmt, mailbox self-service) | 3–5 engineers × 6–9 months | ¥30–50M one-time |
+| Implementation professional services (Okta SI partner) | 6–9 months | ¥75–115M one-time |
+| Ongoing operations | Vendor support + internal team | ¥40–50M/year |
+| **Total Year 1** | | **¥971M–1.05B** |
+| **Total Year 2+** | | **¥866–881M/year** |
+
 ---
 
 ### TCO Summary (3-Year)
@@ -485,6 +550,7 @@ JPIDM requires replacement driven by:
 | SailPoint ISC | ¥520–630M | ¥445M/year | **¥1.4B–1.52B** | **+370–420%** ❌ |
 | Omada Identity | ¥495–625M | ¥415–505M/year | **¥1.33B–1.64B** | **+343–447%** ❌ |
 | **Entra ID Gov + Custom Portal** | ¥870–905M | ¥843–858M/year | **¥2.55B–2.62B** | **+750–773%** ❌ |
+| **Okta Workforce Identity Cloud** | ¥971M–1.05B | ¥866–881M/year | **¥2.70B–2.81B** | **+800–837%** ❌ |
 | One Identity Manager | ¥995M–1.32B | ¥215–270M/year | **¥1.4B–1.86B** | **+367–520%** ❌ |
 
 > **Note:** 3-Year TCO = Year 1 + (Year 2+ × 2). Baseline comparison: ¥100M/year × 3 = ¥300M.
@@ -494,23 +560,23 @@ JPIDM requires replacement driven by:
 
 ## 3. Feature Comparison Matrix
 
-| Feature | JPIDM (Baseline) | Entra ID Gov + Custom Portal | SailPoint ISC | Saviynt EIC | Omada | One Identity | Custom Build | Midpoint |
-|---------|------------------|------------------------------|---------------|-------------|-------|--------------|--------------|----------|
-| **Hybrid AD Provisioning** | ✅ Native (ADSI) | ✅ Native (Agent) | ⚠️ Virtual Appliance | ⚠️ Connector | ❌ Weak | ⚠️ Fair | ✅ Native (Agent) | ⚠️ Connector |
-| **Entra ID Provisioning** | ❌ Not supported | ✅ Native (SCIM) | ✅ Connector | ✅ Connector | ⚠️ Weak | ⚠️ Fair | ✅ Native (Graph) | ⚠️ Connector |
-| **Group Management UI** | ✅ Full (add/remove, CSV, expiration) | ⚠️ Custom build | ⚠️ Limited | ⚠️ Limited | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ❌ Custom dev |
-| **Shared Mailbox Management** | ✅ Full | ⚠️ Custom build | ❌ Custom connector | ❌ Custom connector | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ❌ Custom dev |
-| **Approval Workflows** | ✅ Request_LST engine | ⚠️ Power Automate / Custom | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ⚠️ Custom build | ✅ Activiti engine |
-| **External Group Expiration** | ✅ Native | ⚠️ Custom logic | ⚠️ Custom rule | ⚠️ Custom rule | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ⚠️ Custom workflow |
-| **Self-Service Password Reset** | ✅ MIM portal | ✅ Entra ID SSPR | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ✅ Entra ID SSPR | ⚠️ Custom build |
-| **Account Unlock** | ✅ MIM portal | ✅ Entra ID SSPR | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ✅ Entra ID SSPR | ⚠️ Custom build |
-| **Multi-Language Support** | ✅ Japanese/English | ✅ Full (custom) | ⚠️ English primary | ⚠️ English primary | ⚠️ English primary | ⚠️ English primary | ✅ Full (custom) | ⚠️ Custom translations |
-| **API-First Architecture** | ❌ No APIs | ✅ Graph API | ⚠️ REST APIs | ⚠️ REST APIs | ⚠️ Limited APIs | ❌ Legacy APIs | ✅ Full REST/GraphQL | ⚠️ REST APIs |
-| **DevOps CI/CD Friendly** | ❌ Legacy ASP.NET | ✅ Native (IaC) | ⚠️ SaaS config | ⚠️ SaaS config | ❌ Appliance | ❌ Appliance | ✅ Native (IaC) | ⚠️ Java deploy |
-| **AI Agent Readiness (MCP)** | ❌ No APIs | ✅ Graph API ready | ⚠️ REST APIs | ⚠️ REST APIs | ❌ Limited | ❌ Legacy | ✅ Full custom MCP | ⚠️ REST APIs |
-| **In-House Operability** | ❌ Avanade-dependent | ✅ Full DevOps | ❌ Vendor-dependent | ❌ Vendor-dependent | ❌ Vendor-dependent | ❌ Vendor-dependent | ✅ Full DevOps | ⚠️ Java expertise |
-| **Implementation Timeline** | N/A (current state) | 6-12 months | 6-12 months | 6-9 months | 9-12 months | 12-18 months | 12-18 months | 6-12 months |
-| **Feature Parity Achievable** | 100% (baseline) | 95% (minor gaps) | 60% (portal gaps) | 55% (portal gaps) | 40% (weak hybrid) | 50% (dated UX) | 100% (full control) | 50% (portal gaps) |
+| Feature | JPIDM (Baseline) | Entra ID Gov + Custom Portal | SailPoint ISC | Saviynt EIC | Omada | One Identity | Custom Build | Midpoint | Okta |
+|---------|------------------|------------------------------|---------------|-------------|-------|--------------|--------------|----------|------|
+| **Hybrid AD Provisioning** | ✅ Native (ADSI) | ✅ Native (Agent) | ⚠️ Virtual Appliance | ⚠️ Connector | ❌ Weak | ⚠️ Fair | ✅ Native (Agent) | ⚠️ Connector | ⚠️ AD Agent (user attrs only) |
+| **Entra ID Provisioning** | ❌ Not supported | ✅ Native (SCIM) | ✅ Connector | ✅ Connector | ⚠️ Weak | ⚠️ Fair | ✅ Native (Graph) | ⚠️ Connector | ✅ Native (SCIM) |
+| **Group Management UI** | ✅ Full (add/remove, CSV, expiration) | ⚠️ Custom build | ⚠️ Limited | ⚠️ Limited | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ❌ Custom dev | ❌ Custom build required |
+| **Shared Mailbox Management** | ✅ Full | ⚠️ Custom build | ❌ Custom connector | ❌ Custom connector | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ❌ Custom dev | ❌ Not supported |
+| **Approval Workflows** | ✅ Request_LST engine | ⚠️ Power Automate / Custom | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ⚠️ Custom build | ✅ Activiti engine | ✅ Okta Workflows (low-code) |
+| **External Group Expiration** | ✅ Native | ⚠️ Custom logic | ⚠️ Custom rule | ⚠️ Custom rule | ❌ Custom dev | ❌ Custom dev | ✅ Full (custom) | ⚠️ Custom workflow | ❌ Not native |
+| **Self-Service Password Reset** | ✅ MIM portal | ✅ Entra ID SSPR | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ✅ Entra ID SSPR | ⚠️ Custom build | ✅ Native (Okta SSPR) |
+| **Account Unlock** | ✅ MIM portal | ✅ Entra ID SSPR | ✅ Native | ✅ Native | ✅ Native | ✅ Native | ✅ Entra ID SSPR | ⚠️ Custom build | ✅ Native |
+| **Multi-Language Support** | ✅ Japanese/English | ✅ Full (custom) | ⚠️ English primary | ⚠️ English primary | ⚠️ English primary | ⚠️ English primary | ✅ Full (custom) | ⚠️ Custom translations | ⚠️ English primary |
+| **API-First Architecture** | ❌ No APIs | ✅ Graph API | ⚠️ REST APIs | ⚠️ REST APIs | ⚠️ Limited APIs | ❌ Legacy APIs | ✅ Full REST/GraphQL | ⚠️ REST APIs | ✅ Okta Management API |
+| **DevOps CI/CD Friendly** | ❌ Legacy ASP.NET | ✅ Native (IaC) | ⚠️ SaaS config | ⚠️ SaaS config | ❌ Appliance | ❌ Appliance | ✅ Native (IaC) | ⚠️ Java deploy | ✅ Terraform + API-driven |
+| **AI Agent Readiness (MCP)** | ❌ No APIs | ✅ Graph API ready | ⚠️ REST APIs | ⚠️ REST APIs | ❌ Limited | ❌ Legacy | ✅ Full custom MCP | ⚠️ REST APIs | ⚠️ REST APIs (no MCP native) |
+| **In-House Operability** | ❌ Avanade-dependent | ✅ Full DevOps | ❌ Vendor-dependent | ❌ Vendor-dependent | ❌ Vendor-dependent | ❌ Vendor-dependent | ✅ Full DevOps | ⚠️ Java expertise | ❌ Vendor-dependent |
+| **Implementation Timeline** | N/A (current state) | 6-12 months | 6-12 months | 6-9 months | 9-12 months | 12-18 months | 12-18 months | 6-12 months | 9-15 months |
+| **Feature Parity Achievable** | 100% (baseline) | 95% (minor gaps) | 60% (portal gaps) | 55% (portal gaps) | 40% (weak hybrid) | 50% (dated UX) | 100% (full control) | 50% (portal gaps) | 40% (AD mgmt gaps) |
 
 **Legend**:
 - ✅ Native/Excellent fit
@@ -532,6 +598,7 @@ JPIDM requires replacement driven by:
 | **SailPoint ISC** | ¥575 | ¥445 | ¥445 | **¥1,465** | ¥488 | **+388%** |
 | **Omada Identity** | ¥560 | ¥460 | ¥460 | **¥1,480** | ¥493 | **+393%** |
 | **One Identity Manager** | ¥1,070 | ¥243 | ¥243 | **¥1,556** | ¥519 | **+419%** |
+| **Okta Workforce Identity Cloud** | ¥1,010² | ¥874 | ¥874 | **¥2,758** | ¥919 | **+819%** |
 | **Entra ID Gov + Custom Portal** | ¥890² | ¥851 | ¥851 | **¥2,592** | ¥864 | **+764%** |
 
 ¹ Baseline: ¥100M/year Avanade operational cost  
@@ -570,6 +637,7 @@ JPIDM replacement requirements specify **feature-by-feature BAU migration** (not
 | **Midpoint** | ⚠️ Fair | Connector-by-connector rollout (AD first → Exchange → workflows) | Dual provisioning overlap (JPIDM + Midpoint write same targets) | Medium |
 | **SailPoint ISC** | ⚠️ Fair | Application-by-application onboarding (prefers full scope) | Virtual Appliance + JPIDM coexist, potential conflict | Medium-high |
 | **Saviynt EIC** | ⚠️ Fair | Connector phased rollout (AD → Entra → apps) | Dual provisioning risk (conflict resolution required) | Medium-high |
+| **Okta** | ⚠️ Fair | Authentication/SSPR migration first; AD object management requires custom development before cutover | Okta + JPIDM coexist during custom dev phase; AD management gap creates extended overlap | Medium-high |
 | **Omada** | ❌ Poor | Platform prefers full implementation (governance-first approach) | Parallel systems create reconciliation complexity | High |
 | **One Identity** | ❌ Poor | Comprehensive implementation (role design + provisioning rules) | Difficult coexistence (SQL Server conflicts, dual-write risk) | High |
 
@@ -612,16 +680,16 @@ JPIDM replacement requirements specify **feature-by-feature BAU migration** (not
 
 ### Platform Risk Dimensions
 
-| Risk Category | Entra ID Gov + Custom | Custom Build | Commercial IGA | Open Source |
-|---------------|----------------------|--------------|----------------|-------------|
-| **Vendor Lock-In** | Low (Microsoft ecosystem, but Graph API standard) | None | High (proprietary APIs, data models) | None |
-| **Implementation Complexity** | Medium (custom portal dev) | Medium-high (full dev effort) | Medium-high (vendor implementation) | Medium-high (connector dev) |
-| **Cost Overrun** | Low (in-house control) | Medium (dev timeline risk) | High (vendor services, scope creep) | Medium (support gaps) |
-| **Operational Dependency** | Low (in-house DevOps) | Low (in-house DevOps) | High (vendor-dependent) | Medium (commercial support needed) |
-| **Feature Gap** | Low (Graph API comprehensive) | None (full custom control) | Medium-high (portal limitations) | Medium-high (portal + connector gaps) |
-| **Technology Obsolescence** | Low (Microsoft roadmap) | Low (modern stack) | Medium (vendor roadmap risk) | Medium (Java ecosystem evolution) |
-| **Skills Availability** | High (.NET, React, Azure) | High (.NET, React, Azure) | Low (vendor-specific training) | Medium (Java, Groovy niche) |
-| **Regulatory Compliance** | Medium (custom audit trails) | Medium (custom compliance reports) | Low (native compliance features) | Medium (custom audit trails) |
+| Risk Category | Entra ID Gov + Custom | Custom Build | Commercial IGA | Open Source | Okta |
+|---------------|----------------------|--------------|----------------|-------------|------|
+| **Vendor Lock-In** | Low (Microsoft ecosystem, but Graph API standard) | None | High (proprietary APIs, data models) | None | Medium (Okta Workflows create operational dependency) |
+| **Implementation Complexity** | Medium (custom portal dev) | Medium-high (full dev effort) | Medium-high (vendor implementation) | Medium-high (connector dev) | High (AD object management gaps require extensive custom dev) |
+| **Cost Overrun** | Low (in-house control) | Medium (dev timeline risk) | High (vendor services, scope creep) | Medium (support gaps) | High (licensing + custom portal dev) |
+| **Operational Dependency** | Low (in-house DevOps) | Low (in-house DevOps) | High (vendor-dependent) | Medium (commercial support needed) | High (vendor-dependent + custom dev) |
+| **Feature Gap** | Low (Graph API comprehensive) | None (full custom control) | Medium-high (portal limitations) | Medium-high (portal + connector gaps) | High (no AD group expiration, no shared mailbox, no computer accounts) |
+| **Technology Obsolescence** | Low (Microsoft roadmap) | Low (modern stack) | Medium (vendor roadmap risk) | Medium (Java ecosystem evolution) | Low (Okta roadmap stable) |
+| **Skills Availability** | High (.NET, React, Azure) | High (.NET, React, Azure) | Low (vendor-specific training) | Medium (Java, Groovy niche) | Medium (Okta-specific Workflows expertise) |
+| **Regulatory Compliance** | Medium (custom audit trails) | Medium (custom compliance reports) | Low (native compliance features) | Medium (custom audit trails) | Medium (audit features available, custom reports for JPIDM scope) |
 
 ### Critical Risks by Platform
 
@@ -725,6 +793,10 @@ JPIDM replacement requirements specify **feature-by-feature BAU migration** (not
 #### ❌ Omada Identity
 - **Reason**: Poor hybrid cloud capabilities, dated UX, high cost (¥493M/year avg), weak Asia-Pacific presence
 
+#### ❌ Okta Workforce Identity Cloud
+- **Reason**: Authentication-first platform — **not designed for on-premises AD object management**. Okta's AD Agent syncs user attributes but cannot manage the full suite of AD objects that JPIDM requires (security groups with expiration, computer accounts, resource/room accounts, shared mailboxes). Highest 3-year TCO of all evaluated options (¥2.76B, +819% vs. baseline). Significant custom development required on top of Okta to achieve even partial JPIDM feature parity, making it the most expensive and least fit option for this use case.
+- **Exception**: Okta may be worth evaluating if the organisation has a **separate SSO/MFA consolidation initiative** (not JPIDM replacement) and already has a relationship with Okta as an authentication provider.
+
 #### ⚠️ Midpoint (Use with Caution)
 - **Reason**: Maturity risk in Asia-Pacific, Java/Groovy expertise gap, portal gaps
 - **Consider only if**: Open source philosophy is strategic mandate AND Java expertise available
@@ -816,6 +888,13 @@ Use this table to guide platform selection based on organizational priorities:
 - **Commercial Support**: Evolveum support contract optional ($50K-100K/year)
 - **Infrastructure**: VM or container hosting costs
 
+### Okta Workforce Identity Cloud
+- **Model**: Per-user subscription (tiered: Essentials → Lifecycle Management → Governance)
+- **Cost**: Lifecycle Management + Workflows tier: ~$7/user/month (estimate for full-feature deployment)
+- **Minimum**: Flexible; enterprise contracts typically 1,000+ user minimums
+- **Additional Modules**: Access Gateway (on-premises hybrid), Workflows, ThreatInsight — priced separately or in higher tiers
+- **Note**: Authentication-focused pricing model; per-user costs at 67K scale make it the most expensive option evaluated
+
 ### Custom Build
 - **Model**: Development investment + Azure infrastructure
 - **Cost**: One-time dev (¥50-80M) + ¥5-10M/year Azure + ¥15-25M/year operations
@@ -830,6 +909,7 @@ Use this table to guide platform selection based on organizational priorities:
 | **Microsoft** | Market leader (Entra ID) | Excellent (Fortune 500) | High (strategic investment) | Low |
 | **SailPoint** | Leader (Gartner IGA Magic Quadrant) | Good (Public: SAIL) | High (continuous innovation) | Low |
 | **Saviynt** | Challenger (growing fast) | Good (PE-backed, funding secure) | Medium-high (rapid feature velocity) | Low-medium |
+| **Okta** | Leader (Gartner Access Management Magic Quadrant) | Good (Public: OKTA) | High (authentication roadmap strong; IGA/AD mgmt roadmap secondary) | Low-medium |
 | **Omada** | Niche (Europe-focused) | Fair (private, limited disclosure) | Medium (steady releases) | Medium |
 | **Quest/One Identity** | Declining (Oracle ownership) | Fair (Oracle subsidiary) | Low (Oracle integration uncertainty) | High |
 | **Evolveum (Midpoint)** | Niche (open source) | Fair (commercial support revenue) | Medium (community-driven) | Medium |
@@ -841,6 +921,7 @@ Use this table to guide platform selection based on organizational priorities:
 | Version | Date | Author | Changes |
 |---------|------|--------|---------|
 | 1.0 | 2026-03-26 | Product Specialist - Identity | Initial comprehensive platform evaluation |
+| 1.1 | 2026-03-26 | Product Specialist - Identity | Added Okta Workforce Identity Cloud as evaluated platform (section 1.8); updated pricing, TCO, feature matrix, migration, risk, recommendations, and appendices |
 
 ---
 
