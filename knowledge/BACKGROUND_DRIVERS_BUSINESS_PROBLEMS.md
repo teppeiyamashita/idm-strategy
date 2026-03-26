@@ -20,7 +20,7 @@ EUSP's identity operations are outsourced to external vendors with limited inter
 | Vendor | Scope | Annual Cost | Risk |
 |--------|-------|-------------|------|
 | **Avanade** | JPIDM operations (60,000 users, Japan) | ~¥100M/year | Single point of failure; limited innovation; knowledge retention risk |
-| **TCS** | Partner L3 operations (IT service management) | TBD | High ticket volume (7,784/6.5 months); manual intervention dependency; limited scalability |
+| **TCS** | Partner L3 operations (IT service management) | TBD | High identity-related ticket volume (2,092/6.5 months: 1,167 credential mgmt, 607 access control, 318 account lifecycle); manual intervention dependency; limited scalability |
 
 **Impact:**
 - **Cost:** ~¥100M+/year in operational expenses with no internal capability build-up
@@ -31,8 +31,11 @@ EUSP's identity operations are outsourced to external vendors with limited inter
 
 **Evidence:**
 - JPIDM operational costs: ¥100M/year (Avanade)
-- Partner L3 ticket volume: 7,784 tickets over 6.5 months (TCS operations analysis)
-- High-volume repetitive operations: 15% of tickets are MFA/password resets (1,167 tickets)
+- Partner L3 identity-related operations: 2,092 tickets over 6.5 months (TCS operations analysis)
+  - Credential management: 1,167 tickets (MFA reset: 1,040, password reset: 120)
+  - Access control & permissions: 607 tickets (group membership, ACLs, admin roles)
+  - Account lifecycle: 318 tickets (account creation, configuration, attributes)
+- 26.9% of all partner tickets are identity-related operations
 - Limited FTE operational knowledge: Dependency on vendor runbooks and tribal knowledge
 
 ---
