@@ -118,21 +118,6 @@ This pattern prioritizes **operational independence and capability building** ov
 2. **Address JPIDM/MIM architecture decision** — MIM reaches end-of-support in 2029. Since JPIDM uses MIM for specific credential operations, a decision is required: (a) **Decouple MIM from JPIDM** by replacing password reset/unlock and MIM sync with alternative implementations (e.g., Azure AD SSPR, Entra provisioning), allowing JPIDM to continue; or (b) **Replace the entire JPIDM platform** (ASP.NET MVC 4 portal, ADAccessor layer, workflow engine, MIM backend) with a modern solution. Either option must preserve all current JPIDM capabilities: FTE lifecycle, Japan contingent worker AD provisioning (via EINS feed), group/mailbox management, and approval workflows.
 3. **Establish a global FTE provisioning standard** — Deploy the new platform as the single, authoritative provisioning pipeline for full-time employees across all regions, consuming identity data from EINS (Global ID authority) and HR systems.
 
-### Provisioning Pipeline Target
-
-```
-EINS (Global ID authority)
-     ▲
-     │ (identity records from HR systems)
-HR Systems (Workday, Castnet, ...)
-          │
-          ▼
-   New IDM Platform  ◄─── EUSP-managed, global standard
-          │
-    ┌─────┴──────┐
-    ▼            ▼
- Entra ID    On-premises Active Directory
-```
 
 > **Note on EINS integration:** EINS is the upstream source of Global IDs and identity data. The new platform must consume EINS-distributed data (via existing file-based interfaces) and must not attempt to replace EINS — it remains the global identity authority.
 
