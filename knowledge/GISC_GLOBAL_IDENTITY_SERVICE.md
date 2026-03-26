@@ -239,7 +239,7 @@ GISC Global Identity Service delivers secure, seamless single sign-on (SSO) and 
 
 GISC manages five primary identity types across global operations, each with distinct entry points and provisioning paths:
 
-| Identity Type | Description | Entry Point / Source System | Owner | Current Status |
+| Identity Type | Description | Entry Point / Source System | Owner |Current Status |
 |---------------|-------------|---------------------------|-------|--------|
 | **FTE Employee** | Sony full-time employees | HR Database (Workday, Castnet) | HR Systems → EUSP | Primary (well-managed) |
 | **Contingent Workers** | Contractors, temporary staff | SailPoint / EINS | SailPoint / EINS | Partially Managed |
