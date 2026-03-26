@@ -9,7 +9,7 @@ Our organisation manages approximately **110,000 identities** across multiple re
 > **Revision notes (v2):** Three significant factual corrections have been made based on authoritative platform documentation:
 > 1. EINS is a **global** platform (not Japan-only). Its role is identity record authority and Global ID issuance — it does **not** provision accounts.
 > 2. **MIM is backend sync infrastructure**, not the core engine of JPIDM. The core of JPIDM is an ASP.NET MVC 4 web portal backed by SQL Server.
-> 3. **JPIDM is already the system of entry for Japan contingent workers** (via IDM Web forms), not EINS. EINS provides the identity record/Global ID.
+> 3. **EINS Online Registration is the entry point for Japan contingent workers.** After EINS issues the Global ID, JPIDM receives the EINS feed and provisions the AD account. JPIDM is **not** the entry point — it is the provisioning layer downstream of EINS. IDM Web self-registration (IDM Web forms) covers shared/resource objects only, not people.
 
 ---
 
@@ -19,8 +19,8 @@ Our organisation manages approximately **110,000 identities** across multiple re
 |--------|--------|
 | **Vendor dependency** | JPIDM operations are currently outsourced to **Avanade**. Removing this dependency will reduce cost (currently approximately ¥100 million/year) and increase EUSP control. |
 | **JPIDM end-of-life** | JPIDM is built on ASP.NET MVC 4 (VB.NET) with MIM as backend sync infrastructure. MIM reaches end of support in **2029** (within 3 years). A replacement strategy must be in place before that date. The replacement scope is the entire JPIDM platform — web portal, AD operations layer, workflow engine, and MIM sync — not MIM alone. |
-| **Platform fragmentation** | Workforce provisioning is handled differently across regions: JPIDM (JP), Passport/SailPoint (AM/EU/SM), and APIDM (AP, undocumented). There is no consistent, global provisioning pipeline. |
-| **Global standardisation** | EUSP aims to establish a new platform as the **global standard** for workforce identity provisioning so that all regions and GIC-managed teams can provision employees through one consistent pipeline. |
+| **Platform fragmentation** | Workforce provisioning is handled differently across regions: JPIDM (JP), Passport (AM/EU/SM), and APIDM (AP, undocumented). There is no consistent, global provisioning pipeline. |
+| **Global standardisation** | EUSP aims to establish a new platform as the **global standard** for workforce identity provisioning so that all regions and GISC-managed teams can provision employees through one consistent pipeline. |
 
 ---
 
@@ -51,11 +51,9 @@ Understanding the existing platforms is essential before defining scope. The fol
 | **What it does** | User/group lifecycle in AD and Exchange; mailing list and security group management; company affiliation attributes; approval workflows (Request_LST engine) |
 | **Upstream sources** | Reads identity/org data from EINS/GHD (GHD_PersonalInfo_MST, GHD_OrganizationInfo_MST tables) |
 | **Downstream targets** | Writes to on-prem AD (JP.SONY.COM), Exchange |
-| **Populations managed** | FTE (Japan); **contingent workers (Japan)** via IDM Web forms; service/shared accounts; computer accounts; resource accounts |
+| **Populations managed** | FTE (Japan); contingent workers (Japan — receives EINS feed, provisions AD account); service/shared accounts; computer accounts; resource accounts |
 
 > **Correction from v1:** MIM was described as "the core engine of JPIDM." Per authoritative documentation, the JPIDM core is the **ASP.NET MVC 4 web portal + ADAccessor layer + SQL Server**. MIM is backend sync infrastructure. Replacing JPIDM means replacing the entire platform (portal, workflow engine, AD operations layer, MIM sync) — not only MIM.
-
-> **Correction from v1:** JPIDM **is** already the system of entry for Japan contingent workers (registered via IDM Web forms by company admins), not EINS. EINS provides the identity record and Global ID; JPIDM provisions the AD account.
 
 ### Passport — SailPoint IdentityIQ
 
@@ -71,13 +69,16 @@ Understanding the existing platforms is essential before defining scope. The fol
 
 ## Identity Types in Scope for Decision
 
-| Identity Type | Entry Point | Current Platform | EUSP-Managed? |
-|--------------|-------------|-----------------|:-------------:|
-| Full-time employees (FTE) | HR systems (Workday, Castnet) → EINS (Global ID) | JPIDM (JP), Passport (AM/EU/SM), APIDM* (AP) | ✅ Partial (JP/AP only; AM/EU/SM via Passport) |
-| Contingent workers (Japan) | EINS Online Registration (Global ID) → **JPIDM** (AD account) | JPIDM | ✅ Yes (JP) |
-| Contingent workers (AM/EU/SM) | Passport "Create Contingent Worker" form | Passport/SailPoint | ❌ No (Ramnath's team) |
-| Service / shared accounts | JPIDM (JP), AD-native (other regions) | JPIDM (JP), Various | ✅ Partial (JP only) |
-| Admin accounts | Entra ID Tenant | Entra ID | ✅ Yes |
+| Identity Type | Data Entry Point | Provisioning Flow | EUSP Owns Entry Point System? |
+|--------------|-----------------|-------------------|:-----------------:|
+| FTE — Japan | Castnet (HR) | Castnet → EINS → JPIDM → AD (JP) | ❌ (HR / Castnet team) |
+| FTE — Asia-Pacific | HR system? | HR → APIDM → AD (AP)? | ❓ (Unknown) |
+| FTE — AM / EU / SM | Workday (HR) | Workday → Passport → AD (AM/EU/SM) | ❌ (HRES / Workday team) |
+| Contingent workers — Japan | EINS | EINS → JPIDM → AD (JP) | ❌ (EINS team) |
+| Contingent workers — AM / EU / SM | Passport | Passport → AD (AM/EU/SM) | ❌ (Passport team) |
+| Service / shared accounts — Japan | JPIDM | IDM Web → JPIDM → AD (JP) | ✅ |
+| Service / shared accounts — AM / EU / SM | Passport | Passport → AD (AM/EU/SM) | ❌ (Passport team) |
+| Cloud Admin / Service accounts | Entra ID Tenant | Entra ID | ✅ |
 
 *APIDM is referenced for the AP region but is **not documented** in the authoritative knowledge base. Capabilities, ownership, and migration complexity are unknown and should be investigated before committing to scope.
 
@@ -92,7 +93,7 @@ Limit the project scope to **EUSP-managed platforms** — primarily JPIDM and AP
 ### Goals
 
 1. **Remove Avanade dependency** — Bring JPIDM operations fully in-house to EUSP, eliminating approximately ¥100 million/year in Avanade operational costs.
-2. **Address JPIDM end-of-life** — Replace the JPIDM platform (ASP.NET MVC 4 portal, ADAccessor layer, MIM backend) before the MIM 2029 deadline. The replacement must cover all current JPIDM capabilities: FTE lifecycle, contingent worker registration and provisioning in Japan, group/mailbox management, and approval workflows.
+2. **Address JPIDM end-of-life** — Replace the JPIDM platform (ASP.NET MVC 4 portal, ADAccessor layer, MIM backend) before the MIM 2029 deadline. The replacement must cover all current JPIDM capabilities: FTE lifecycle, Japan contingent worker AD provisioning (via EINS feed), group/mailbox management, and approval workflows.
 3. **Establish a global FTE provisioning standard** — Deploy the new platform as the single, authoritative provisioning pipeline for full-time employees across all regions, consuming identity data from EINS (Global ID authority) and HR systems.
 
 ### Provisioning Pipeline Target
@@ -120,7 +121,7 @@ HR Systems (Workday, Castnet, ...)
 | **JPIDM full replacement** | Replace the entire JPIDM platform: web portal, AD operations layer (ADAccessor equivalent), approval workflow engine (Request_LST equivalent), MIM backend sync. This includes FTE lifecycle AND Japan contingent worker registration/provisioning. |
 | **APIDM** | Migrate APIDM-managed accounts to the new platform. *Note: APIDM capabilities are undocumented — a discovery phase is required before estimating effort.* |
 | **FTE account lifecycle** | Create, update, and deactivate full-time employee accounts automatically from HR/EINS data feed |
-| **Japan contingent worker lifecycle** | Maintain current capability: company admin UI for registering Japan contingent workers, triggering AD account creation |
+| **Japan contingent worker lifecycle** | JPIDM currently receives the EINS feed and provisions AD accounts for Japan contingent workers. The new platform must preserve this capability: consume the EINS feed and provision AD accounts for contingent workers registered via EINS Online Registration. |
 | **Global provisioning standard** | New platform becomes the authoritative provisioning engine for FTEs (and JP contingent workers) into Entra ID and on-premises AD across all regions |
 | **Avanade offboarding** | End Avanade contract and operational dependency |
 
@@ -128,16 +129,16 @@ HR Systems (Workday, Castnet, ...)
 
 | Area | Reason |
 |------|--------|
-| **SailPoint / Passport platform changes** | Managed by Ramnath's team; outside EUSP authority for this project. AM/EU/SM contingent worker provisioning continues unchanged. |
+| **Passport platform changes** | Managed by Ramnath's team; outside EUSP authority for this project. AM/EU/SM contingent worker provisioning continues unchanged. |
 | **EINS platform changes** | EINS is managed outside EUSP at a global level. The new platform will *consume* EINS data but not replace it. |
-| **EINS Online Registration** | The Global ID registration process for contingent workers in Japan (creating the EINS record) remains unchanged. Only the downstream AD provisioning (currently JPIDM) is replaced. |
+| **EINS Online Registration** | The EINS identity registration process for Japan contingent workers (Global ID issuance) is outside EUSP scope and remains unchanged. Only the downstream AD provisioning step (currently JPIDM consuming the EINS feed) is in scope for replacement. |
 | **Access certification / IGA** | Passport handles access reviews for AM/EU/SM. This project focuses on provisioning, not governance. |
 
 ### Stakeholders
 
 - **Primary**: EUSP team
 - **Secondary**: HR system owners (Workday, Castnet), EINS team (interface alignment), Regional IT leads for AD/Entra ID
-- **Not involved**: Ramnath's team (SailPoint/Passport)
+- **Not involved**: Ramnath's team (Passport)
 
 ### Pros & Cons
 
@@ -147,7 +148,7 @@ HR Systems (Workday, Castnet, ...)
 | Directly addresses the 2029 MIM deadline | Two parallel provisioning paradigms remain (new platform + Passport) for AM/EU/SM |
 | Removes Avanade cost dependency quickly | APIDM discovery gap — effort is currently unknown |
 | Realistic and deliverable within a 3-year window | No unified governance layer for access certification (would require separate IGA initiative) |
-| Keeps the project within EUSP authority — no need for cross-team governance | Japan contingent worker capability must be preserved in the new platform (not zero scope) |
+| Keeps the project within EUSP authority — no need for cross-team governance | Japan contingent worker AD provisioning capability must be preserved in the replacement platform |
 | EINS integration is well-understood (file-based interfaces already exist) | |
 
 ---
@@ -156,11 +157,11 @@ HR Systems (Workday, Castnet, ...)
 
 ### Overview
 
-Expand the project scope to **all identity management platforms**, consolidating JPIDM, APIDM, and Passport (SailPoint) into a single, unified identity management solution. EINS remains unchanged as the global identity authority.
+Expand the project scope to **all identity management platforms**, consolidating JPIDM, APIDM, and Passport into a single, unified identity management solution. EINS remains unchanged as the global identity authority.
 
 ### Goals
 
-1. **Platform consolidation** — Integrate JPIDM, APIDM, and Passport/SailPoint into one unified provisioning and governance platform.
+1. **Platform consolidation** — Integrate JPIDM, APIDM, and Passport into one unified provisioning and governance platform.
 2. **Address all identity types and regions** — Consistent lifecycle management for both FTE and contingent worker identities across all regions.
 3. **Simplify the landscape** — Reduce the total number of independent provisioning platforms from three (JPIDM, APIDM, Passport) to one.
 
@@ -170,19 +171,19 @@ Expand the project scope to **all identity management platforms**, consolidating
 
 | Platform | Current Owner | Identity Types Covered | Documentation Status |
 |----------|--------------|----------------------|----------------------|
-| JPIDM | EUSP | FTE (JP), Contingent workers (JP — IDM Web forms), Service/shared/computer accounts | ✅ Well documented |
+| JPIDM | EUSP | FTE (JP), Contingent workers (JP — AD provisioning via EINS feed), Service/shared/computer accounts | ✅ Well documented |
 | APIDM | EUSP (in transition) | FTE (AP) | ❌ **Undocumented — discovery required** |
-| Passport / SailPoint | Non-EUSP (Ramnath's team) | Contingent workers (AM/EU/SM), FTE orchestration from Workday | ✅ Documented |
+| Passport | Non-EUSP (Ramnath's team) | Contingent workers (AM/EU/SM), FTE orchestration from Workday, Service/shared accounts (AM/EU/SM) | ✅ Documented |
 
 > **Note on Passport for FTEs:** Passport does not originate FTE identities — Workday does. For FTEs in AM/EU/SM, consolidation may be achievable by routing the Workday → AD provisioning through the new platform directly, bypassing Passport. This could allow FTE provisioning consolidation without needing Passport to be replaced — only the contingent worker flow would require Passport integration/migration.
 
 ### Approach
 
 A **feature analysis** must be conducted to map current capabilities and define the consolidation target. Key questions:
-- Which JPIDM-specific capabilities (Japan contingent worker forms, computer account management) are required in the consolidated platform?
-- Can Workday → new platform → AD replace the Passport FTE flow, or does SailPoint governance (access certification) create a hard dependency?
+- Which JPIDM-specific capabilities (Japan contingent worker AD provisioning via EINS feed, computer account management, group management) are required in the consolidated platform?
+- Can Workday → new platform → AD replace the Passport FTE flow, or does Passport governance (access certification) create a hard dependency?
 - What are APIDM's actual capabilities? (Currently undocumented)
-- Which platform serves as the consolidation target: SailPoint, Microsoft Entra ID Governance, a custom platform, or another IGA solution?
+- Which platform serves as the consolidation target: Passport (SailPoint IIQ/ISP), Microsoft Entra ID Governance, a custom platform, or another IGA solution?
 
 ### In Scope
 
@@ -203,7 +204,7 @@ A **feature analysis** must be conducted to map current capabilities and define 
 ### Stakeholders
 
 - **Primary**: EUSP team
-- **Required partners**: Ramnath's team (SailPoint/Passport), EINS team (interface alignment), HR system owners, Regional IT leads
+- **Required partners**: Ramnath's team (Passport), EINS team (interface alignment), HR system owners, Regional IT leads
 - **Governance**: Cross-team steering committee required
 
 ### Pros & Cons
@@ -214,7 +215,7 @@ A **feature analysis** must be conducted to map current capabilities and define 
 | Eliminates parallel platform fragmentation entirely | Requires agreement from Ramnath's team to migrate Passport capabilities — political complexity |
 | More cost-efficient long-term (one platform to operate) | Feature analysis phase adds time and cost before delivery starts |
 | Addresses contingent worker consistency gap across regions | APIDM discovery adds unknown risk |
-| Removes SailPoint licensing cost if fully replaced | Risk of in-flight scope changes if Passport team dependencies are unresolved |
+| Removes Passport licensing cost if fully replaced | Risk of in-flight scope changes if Passport team dependencies are unresolved |
 
 ---
 
@@ -225,7 +226,7 @@ A **feature analysis** must be conducted to map current capabilities and define 
 | Platforms in scope | JPIDM, APIDM | JPIDM, APIDM, Passport |
 | EINS | Unchanged (consumed as data source) | Unchanged (consumed as data source) |
 | FTE provisioning regions | All (via new global standard) | All (same) |
-| Contingent workers — Japan | ✅ Included (JPIDM replacement preserves this) | ✅ Included |
+| Contingent workers — Japan | ✅ Included (JPIDM replacement preserves AD provisioning via EINS feed) | ✅ Included |
 | Contingent workers — AM/EU/SM | ❌ Remains with Passport | ✅ Migrated to new platform |
 | Resolves MIM/JPIDM 2029 deadline | ✅ Yes | ✅ Yes |
 | Removes Avanade dependency | ✅ Yes | ✅ Yes |
@@ -250,7 +251,7 @@ A **feature analysis** must be conducted to map current capabilities and define 
 ### Choose Pattern 2 if:
 
 - Leadership has appetite for a **comprehensive, multi-year transformation** that fully resolves regional platform fragmentation.
-- There is organisational authority and executive support to bring **Ramnath's team** (SailPoint/Passport) into scope under a unified governance model.
+- There is organisational authority and executive support to bring **Ramnath's team** (Passport) into scope under a unified governance model.
 - A full **feature analysis and platform consolidation study** can be funded and staffed before implementation begins.
 - The organisation accepts a longer timeline and higher execution risk in exchange for a single operating platform across all regions.
 
@@ -262,7 +263,7 @@ Regardless of which pattern is selected, the following actions apply:
 
 1. **Confirm the selected pattern** with project sponsors and key stakeholders.
 2. **APIDM discovery** — Commission a capability and ownership assessment for APIDM (AP region) before committing to migration scope. This is a gap in both patterns.
-3. **Initiate JPIDM replacement platform evaluation** — assess candidate platforms (SailPoint IIQ/ISP, Microsoft Entra ID Governance, custom, or other) against current JPIDM functional requirements, including Japan contingent worker registration capability and AD/Exchange write operations.
+3. **Initiate JPIDM replacement platform evaluation** — assess candidate platforms (SailPoint IIQ/ISP, Microsoft Entra ID Governance, custom, or other) against current JPIDM functional requirements, including Japan contingent worker AD provisioning (EINS feed consumption) and AD/Exchange write operations.
 4. **Map Avanade contract timeline** — align the Avanade offboarding plan with the new platform go-live.
 5. **Define EINS integration interface** — confirm the file-based interfaces EINS currently publishes and ensure the new platform can consume them without modification to EINS.
 6. **Establish the FTE provisioning pipeline design** — define the data flow from Workday/Castnet → EINS (Global ID) → New Platform → Entra ID / on-premises AD.
@@ -279,11 +280,11 @@ This revision was produced in consultation with the Platform Expert agent, which
 | `knowledge/platforms/EINS.md` | EINS is global (not JP-only); is identity record authority only; does not provision accounts |
 | `knowledge/platforms/JPIDM.md` | JPIDM is the provisioning system for Japan, including contingent workers |
 | `knowledge/platforms/JPIDM/ARCHITECTURE.md` | JPIDM core = ASP.NET MVC 4 + SQL Server + ADAccessor; MIM is backend sync only |
-| `knowledge/platforms/JPIDM/FEATURES.md` | Japan contingent workers registered via IDM Web forms; password reset handled outside JPIDM |
+| `knowledge/platforms/JPIDM/FEATURES.md` | IDM Web self-registration (IDM Web forms) is for shared/resource objects only — not people; Japan contingent worker AD accounts are provisioned by JPIDM via EINS feed, not via IDM Web forms; password reset handled outside JPIDM |
 | `knowledge/platforms/JPIDM/SYSTEM_CONTEXT.md` | JPIDM reads from EINS/GHD tables; writes to JP.SONY.COM AD and Exchange |
 | `knowledge/platforms/JPIDM/RELATIONSHIPS.md` | JPIDM does not replace EINS or Passport; each serves a distinct architectural role |
 | `knowledge/platforms/Passport.md` | Passport is downstream of Workday for FTEs; is system of entry for contingent workers only |
-| `knowledge/platforms/IDENTITY_PLATFORM_FEATURE_MAP.md` | EINS = identity truth; Passport = access governance; JPIDM = Japan action platform |
+| `knowledge/platforms/IDENTITY_PLATFORM_FEATURE_MAP.md` | EINS = identity truth; Passport = access governance; JPIDM = Japan action platform. Japan contingent workers: entry via EINS Online Registration → JPIDM receives EINS feed → provisions AD account. |
 | `knowledge/Landscape.md` | Entra ID: 250K objects, 170K homed, 130K on-prem synced; JP 67K, AP 20K |
 
 *Document prepared by EUSP — v2 revised with Platform Expert consultation. Original: IDM_STRATEGY_SCOPING.md*

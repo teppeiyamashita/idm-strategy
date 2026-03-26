@@ -53,7 +53,7 @@
 | Capability | EINS | Passport | JPIDM |
 |-----------|------|----------|-------|
 | Employee account creation | ❌ | ✅ (Workday-driven) | ❌ (reads from EINS/GHD; does not create employee AD accounts) |
-| Contingent worker account creation | ❌ | ✅ (Passport-driven) | ✅ (Japan contingent workers registered via IDM Web forms) |
+| Contingent worker account creation | ❌ | ✅ (Passport-driven) | ✅ (Japan — JPIDM receives EINS feed after EINS Online Registration and provisions AD account; entry point is EINS, not IDM Web forms) |
 | User profile / mail settings self-service | ❌ | ✅ | ✅ (display name, mail alias, mailbox size, mail domain) |
 | Joiner / Mover / Leaver automation | ❌ | ✅ | ❌ (request-driven only; no automated JML triggers) |
 | Account deprovisioning / termination | ❌ | ✅ | ✅ (leave/separation request workflow) |
@@ -158,7 +158,7 @@
 | Identity Population | System of Entry | Orchestration / Action | Directory of Truth |
 |--------------------|-----------------|----------------------|-------------------|
 | **FTE Employees** | Workday → EINS/GHD | Passport (AM/EU/SM), IDM Web (JP, profile/group changes only) | EINS (Global ID) |
-| **Contingent Workers** | Passport (AM/EU/SM), IDM Web forms (JP) | Passport (AM/EU/SM), IDM Web (JP) | EINS (Global ID) |
+| **Contingent Workers** | Passport (AM/EU/SM), EINS Online Registration (JP) | Passport (AM/EU/SM), JPIDM (JP — AD provisioning via EINS feed) | EINS (Global ID) |
 | **Shared / Service Accounts** | IDM Web (JP), Passport (AM/EU) | IDM Web (JP AD objects), Passport (AM/EU) | ❌ No global authority |
 | **Admin Accounts** | Entra ID (Tenant) | Entra ID | Entra ID |
 | **Guest Accounts** | Azure AD B2B | Azure AD | Azure AD |

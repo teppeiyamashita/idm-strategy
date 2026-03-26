@@ -61,7 +61,7 @@ IDM Web answers **"What do Japan users need to change in AD today?"**
 | **Access Governance** | ❌ | ✅ |
 | **Access Certification** | ❌ | ✅ |
 | **Compliance Reporting** | ❌ | ✅ |
-| **Contingent Worker Entry** | ✅ For Japan | ✅ For AM/EU/SM |
+| **Contingent Worker AD Provisioning** | ✅ For Japan (receives EINS feed; provisions AD account) | ✅ For AM/EU/SM |
 | **Workday Integration** | ❌ | ✅ (via connector) |
 | **Password Management** | ❌ AD-native | ✅ Password reset portal |
 | **Shared Mailbox Management** | ✅ | ✅ |

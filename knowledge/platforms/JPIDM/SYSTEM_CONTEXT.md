@@ -187,7 +187,7 @@ Function IDs embedded in `Request_LST` table track request type, status, and his
 | Account Provisioning | ✅ (direct AD) | ✅ (via SailPoint workflows) |
 | Access Governance | ❌ | ✅ |
 | Access Certification | ❌ | ✅ |
-| Contingent Worker Entry | ✅ (Japan) | ✅ (AM/EU/SM) |
+| Contingent Worker AD Provisioning | ✅ (Japan — receives EINS feed; provisions AD account) | ✅ (AM/EU/SM) |
 | Request/Approval Workflow | ✅ | ✅ |
 | Compliance Reporting | ❌ | ✅ |
 
