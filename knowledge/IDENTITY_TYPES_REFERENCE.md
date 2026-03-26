@@ -12,7 +12,7 @@
 | FTE — AM / EU / SM | Workday (HR) | Workday → Passport → AD (AM/EU/SM) | ❌ (HRES / Workday team) |
 | Contingent workers — Japan | EINS | EINS → JPIDM → AD (JP) | ❌ (EINS team) |
 | Contingent workers — AM / EU / SM | Passport | Passport → AD (AM/EU/SM) | ❌ (Passport team) |
-| Service / shared accounts — Japan | JPIDM | IDM Web → JPIDM → AD (JP) | ✅ |
+| Service / shared accounts — Japan | JPIDM | JPIDM → AD (JP) | ✅ |
 | Service / shared accounts — AM / EU / SM | Passport | Passport → AD (AM/EU/SM) | ❌ (Passport team) |
 | Cloud Admin / Service accounts | Entra ID Tenant | Entra ID | ✅ |
 
