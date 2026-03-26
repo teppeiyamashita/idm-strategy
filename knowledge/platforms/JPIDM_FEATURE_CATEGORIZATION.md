@@ -32,7 +32,7 @@
 
 *These are interactive features accessed via the web portal by administrators or end users. These are NOT covered by the provisioning architecture principles — they require a separate UI/workflow platform decision.*
 
-### End-User-Facing Features
+### Personal Account & Mail Settings
 
 | Feature | Description | Who Uses It |
 |---------|-------------|-------------|
@@ -40,11 +40,21 @@
 | Mail alias management | Add/remove email aliases (proxy addresses) from own account | Regular employees |
 | Mail domain selection | Change primary email domain (jp.sony.com vs sony.com) | Regular employees |
 | Mailbox size selection | Request mailbox size tier change (Standard/Large/Enterprise) | Regular employees |
-| Leave/separation request | Submit employee departure application with alternate mail forwarding | Regular employees |
+
+### Password & Account Access
+
+| Feature | Description | Who Uses It |
+|---------|-------------|-------------|
 | Password reset | Reset Windows password using MIM portal (self-service with security questions) | All users |
 | Account unlock | Unlock locked account after failed login attempts | All users |
+
+### Employee Lifecycle (Manager / HR)
+
+| Feature | Description | Who Uses It |
+|---------|-------------|-------------|
 | Manager-initiated profile edit | Manager edits subordinate's profile attributes | Managers |
 | Company affiliation change | Change company assignment for multi-company employees (兼務者) | Employees or Managers |
+| Leave/separation request | Submit employee departure application with alternate mail forwarding | Regular employees |
 
 ### Group & Mailing List Management
 
@@ -61,26 +71,41 @@
 | Group member list export | Download group membership as CSV/file | Group owners, Alternative admins |
 | Group mail forwarding | Configure alternate recipient (mail forwarding) for group | Group owners |
 
-### Shared Resource Management
+### Shared Service Accounts
 
 | Feature | Description | Who Uses It |
 |---------|-------------|-------------|
 | Shared account creation | Register new shared service account in AD | Authorised admins, Resource owners |
 | Shared account modification | Change shared account display name, description, properties | Authorised admins, Resource owners |
 | Shared account deletion | Request shared account removal (requires approval) | Authorised admins, Resource owners |
+
+### Shared Mailbox Management
+
+| Feature | Description | Who Uses It |
+|---------|-------------|-------------|
 | Shared mailbox creation | Create new shared mailbox for team/department | Authorised admins, Mailbox owners |
 | Shared mailbox member edit | Add/remove delegates to shared mailbox | Mailbox owners, Alternative admins |
 | Bulk shared mailbox member edit | Upload CSV to batch-update mailbox members | Mailbox owners, Alternative admins |
 | Shared mailbox member list export | Download mailbox delegation list as file | Mailbox owners, Alternative admins |
 | Shared mailbox mail alias management | Add proxy addresses to shared mailbox | Mailbox owners, Admins |
 | Shared mailbox forwarding | Set alternate recipient (mail forwarding) | Mailbox owners, Admins |
-| Computer account creation | Register new computer in specific AD Organisational Unit | IT admins, Designated operators |
-| Computer account OU move | Move computer object to different OU | IT admins, Designated operators |
-| Computer account reset | Reset computer account password/status | IT admins, Designated operators |
+
+### Facility Resources (Meeting Rooms & Equipment)
+
+| Feature | Description | Who Uses It |
+|---------|-------------|-------------|
 | Meeting room resource creation | Create resource mailbox for conference room | Facility admins, IT admins |
 | Equipment resource creation | Register equipment (projector, etc.) as bookable resource | Facility admins, IT admins |
 | Resource property edit | Change room capacity, equipment specs, contact info | Resource owners, Admins |
 | Resource deletion | Request removal of decommissioned resource | Resource owners, Admins |
+
+### Computer Account Management
+
+| Feature | Description | Who Uses It |
+|---------|-------------|-------------|
+| Computer account creation | Register new computer in specific AD Organisational Unit | IT admins, Designated operators |
+| Computer account OU move | Move computer object to different OU | IT admins, Designated operators |
+| Computer account reset | Reset computer account password/status | IT admins, Designated operators |
 
 ### Request & Approval Workflow
 
