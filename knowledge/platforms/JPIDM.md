@@ -65,6 +65,20 @@ This confirms:
 - MIM is **in active operational use**
 - JPIDM delegates authentication to Active Directory but manages resets via MIM
 
+> ⚠️ **Architectural Note: JPIDM ≠ MIM**
+>
+> JPIDM **uses** MIM but is **architecturally independent** of it. The core JPIDM platform consists of:
+> - ASP.NET MVC 4 web portal
+> - SQL Server (IDM_DB)
+> - ADAccessor layer (ADSI-based AD operations)
+> - Request_LST workflow engine
+>
+> MIM is a **backend sync component** for specific credential operations (password reset, account unlock). **MIM decommissioning does not automatically require JPIDM decommissioning**. There are two architectural options:
+> 1. **Decouple MIM**: Replace MIM-dependent features (password reset, unlock) with alternative implementations while retaining the JPIDM platform
+> 2. **Replace entire platform**: Replace JPIDM + MIM together as part of a comprehensive replatforming
+>
+> MIM's 2029 end-of-support deadline is a forcing function requiring a decision between these two options, not an automatic mandate to replace JPIDM.
+
 ---
 
 ### 3.2 Active Directory and Exchange Integration

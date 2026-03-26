@@ -14,6 +14,14 @@
 | GHD data import to IDM_DB | Synchronizes employee and organizational data from EINS/GHD into local IDM_DB tables (GHD_PersonalInfo_MST, GHD_OrganizationInfo_MST, GHD_PersonalORGInfo_MST) | EINS/GHD data updates | IDM_DB (read-only GHD tables) |
 | MIM synchronization | Microsoft Identity Manager backend synchronization supporting credential operations | MIM sync schedule | Active Directory, Exchange |
 
+> ⚠️ **Architectural Note: MIM is Decoupling-Eligible**
+>
+> MIM is a **backend component used by JPIDM**, not the core platform itself. MIM's 2029 end-of-support creates two strategic options:
+> 1. **Decouple MIM**: Replace MIM-dependent features (password reset via MIM portal, account unlock, MIM sync jobs) with alternative implementations (e.g., Azure AD SSPR, Microsoft Entra provisioning agents) while retaining JPIDM
+> 2. **Replace entire platform**: Modernize both JPIDM and its MIM dependency together
+>
+> **MIM decommissioning ≠ JPIDM decommissioning**. The decision should be based on total cost of ownership, operational risk, and strategic alignment — not MIM's end-of-life date alone.
+
 > ⚠️ **Documentation Gap: Joiner/Mover/Leaver Automation**
 >
 > The following capabilities are **explicitly noted as undocumented** in the JPIDM knowledge base:

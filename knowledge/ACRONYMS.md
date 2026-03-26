@@ -9,9 +9,9 @@ This document maintains a reference list of acronyms and abbreviations used acro
 | Acronym | Full Name | Description |
 |---------|-----------|-------------|
 | **EINS** | Enterprise Id-management Networking Service | Global identity directory and Global ID authority for Sony Group |
-| **JPIDM** | Japan Identity Management | Japan-region identity management platform (MIM-based) |
-| **APIDM** | Asia-Pacific Identity Management | Asia-Pacific region identity management platform (MIM-based, undocumented) |
-| **MIM** | Microsoft Identity Manager | Backend sync infrastructure used by JPIDM and APIDM |
+| **JPIDM** | Japan Identity Management | Japan-region identity management platform (uses MIM as backend component) |
+| **APIDM** | Asia-Pacific Identity Management | Asia-Pacific region identity management platform (uses MIM as backend component, undocumented) |
+| **MIM** | Microsoft Identity Manager | Backend sync component used by JPIDM and APIDM for credential operations (password reset/unlock, sync jobs). **Note:** MIM is architecturally decoupling-eligible; MIM decommissioning ≠ JPIDM/APIDM decommissioning |
 | **GHD** | Global HR Database | HR data source tables replicated into JPIDM (GHD_PersonalInfo_MST, GHD_OrganizationInfo_MST) |
 | **IGA** | Identity Governance and Administration | Governance capabilities (access certification, compliance reporting) |
 

@@ -281,8 +281,8 @@ By adopting API-driven provisioning now:
 
 ### Business Impact
 
-- **Eliminate Avanade dependency** (¥100M/year operational cost)
-- **Meet MIM 2029 deadline** with a cloud-ready replacement
+- **Eliminate Avanade dependency** (¥100M/year operational cost, if full JPIDM replacement chosen)
+- **Address MIM 2029 end-of-support** with either MIM decoupling or full platform replacement (see [JPIDM_MIM_DECOUPLING_OPTIONS.md](platforms/JPIDM_MIM_DECOUPLING_OPTIONS.md))
 - **Future-proof architecture** — supports Sony's cloud-first strategy
 - **Reduce technical debt** — standardizes on modern SCIM protocol
 
@@ -305,12 +305,14 @@ Any candidate platform for the next-generation IDM system **MUST** meet these re
 
 ### Platform Features NOT Required (Replaced by Microsoft)
 
-These capabilities were required in JPIDM but are **NOT** required in the new platform:
+These capabilities were required in JPIDM but are **NOT** required in the new platform (if full replacement chosen) or alternative MIM-decoupling solution:
 - ❌ ADSI libraries or LDAP write capability
 - ❌ Direct Active Directory connectivity
 - ❌ On-premises server infrastructure for provisioning
 - ❌ Active Directory PowerShell module
 - ❌ Microsoft Identity Manager (MIM) backend
+
+> **Note:** If organization chooses MIM decoupling over full platform replacement, JPIDM's ASP.NET/ADSI components would remain but MIM would be replaced per these principles.
 
 ---
 
@@ -448,7 +450,7 @@ The provisioning architecture principles are successfully implemented when:
 3. ✅ **Hybrid deployment validated**: Provisioning agent successfully writes to on-prem AD in Phase 1
 4. ✅ **Cloud-ready design**: Configuration change (not code change) enables Phase 2 cloud-native provisioning
 5. ✅ **Avanade dependency eliminated**: EUSP team operates the platform without vendor reliance
-6. ✅ **MIM sunset achieved**: Replacement platform deployed before MIM 2029 end-of-support
+6. ✅ **MIM 2029 deadline met**: Organization has either (a) decoupled MIM from JPIDM using API-driven alternatives, or (b) deployed full platform replacement before MIM end-of-support
 7. ✅ **Feature parity**: All critical JPIDM capabilities (FTE/contingent/group mgmt) are replaced
 
 ---

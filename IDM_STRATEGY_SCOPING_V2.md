@@ -17,10 +17,12 @@ Our organisation manages approximately **110,000 identities** across multiple re
 
 | Driver | Detail |
 |--------|--------|
-| **Vendor dependency** | JPIDM operations are currently outsourced to **Avanade**. Removing this dependency will reduce cost (currently approximately ¥100 million/year) and increase EUSP control. |
-| **JPIDM end-of-life** | JPIDM is built on ASP.NET MVC 4 (VB.NET) with MIM as backend sync infrastructure. MIM reaches end of support in **2029** (within 3 years). A replacement strategy must be in place before that date. The replacement scope is the entire JPIDM platform — web portal, AD operations layer, workflow engine, and MIM sync — not MIM alone. |
+| **Vendor dependency** | EUSP operations are heavily dependent on external vendors: **Avanade** (JPIDM operations, ~¥100M/year) and **TCS** (partner L3 operations handling 7,784+ tickets/6.5 months). This creates operational risk, limits EUSP's ability to innovate, and prevents direct control over service delivery. Removing these dependencies through DevOps maturity, FTE enablement, and self-service automation will reduce costs, increase operational control, and enable faster response to business needs. |
+| **JPIDM end-of-life considerations** | JPIDM is built on ASP.NET MVC 4 (VB.NET) with MIM as backend sync infrastructure. MIM reaches end of support in **2029** (within 3 years). **Important: JPIDM uses MIM but is architecturally independent**. MIM decommissioning does not automatically require JPIDM replacement. Two options exist: (1) **Decouple MIM** — replace MIM-dependent features (password reset/unlock, MIM sync) with alternatives while retaining JPIDM platform; (2) **Replace entire platform** — modernize JPIDM + MIM together. The MIM 2029 deadline is a forcing function requiring a decision, not an automatic mandate to replace JPIDM. |
 | **Platform fragmentation** | Workforce provisioning is handled differently across regions: JPIDM (JP), Passport (AM/EU/SM), and APIDM (AP, undocumented). There is no consistent, global provisioning pipeline. |
 | **Global standardisation** | EUSP aims to establish a new platform as the **global standard** for workforce identity provisioning so that all regions and GISC-managed teams can provision employees through one consistent pipeline. |
+| **Drive self-service** | Empower end users and managers with self-service capabilities to reduce operational burden on IT teams. Enable users to manage their own accounts, group memberships, and access requests without requiring manual intervention from support teams. |
+| **AI Agent ready architecture** | Build a modern, API-first architecture that supports AI agent integration and automation. The platform must expose APIs compatible with AI agent frameworks (MCP, SCIM, REST) to enable intelligent automation, reduce manual operations, and prepare for future AI-driven identity management capabilities. API-driven design ensures extensibility and enables integration with emerging AI tools. |
 
 ---
 
@@ -53,7 +55,9 @@ Understanding the existing platforms is essential before defining scope. The fol
 | **Downstream targets** | Writes to on-prem AD (JP.SONY.COM), Exchange |
 | **Populations managed** | FTE (Japan); contingent workers (Japan — receives EINS feed, provisions AD account); service/shared accounts; computer accounts; resource accounts |
 
-> **Correction from v1:** MIM was described as "the core engine of JPIDM." Per authoritative documentation, the JPIDM core is the **ASP.NET MVC 4 web portal + ADAccessor layer + SQL Server**. MIM is backend sync infrastructure. Replacing JPIDM means replacing the entire platform (portal, workflow engine, AD operations layer, MIM sync) — not only MIM.
+> **Correction from v1:** MIM was described as "the core engine of JPIDM." Per authoritative documentation, the JPIDM core is the **ASP.NET MVC 4 web portal + ADAccessor layer + SQL Server**. MIM is backend sync infrastructure only.
+>
+> **JPIDM ≠ MIM**: JPIDM uses MIM as a backend component, but they are architecturally independent. **MIM decommissioning does not automatically require JPIDM decommissioning**. Organizations may choose to: (1) decouple MIM from JPIDM by replacing MIM-dependent features with alternatives, or (2) replace the entire platform. The MIM 2029 deadline forces a decision but does not mandate full platform replacement.
 
 ### Passport — SailPoint IdentityIQ
 
@@ -93,8 +97,60 @@ Limit the project scope to **EUSP-managed platforms** — primarily JPIDM and AP
 ### Goals
 
 1. **Remove Avanade dependency** — Bring JPIDM operations fully in-house to EUSP, eliminating approximately ¥100 million/year in Avanade operational costs.
-2. **Address JPIDM end-of-life** — Replace the JPIDM platform (ASP.NET MVC 4 portal, ADAccessor layer, MIM backend) before the MIM 2029 deadline. The replacement must cover all current JPIDM capabilities: FTE lifecycle, Japan contingent worker AD provisioning (via EINS feed), group/mailbox management, and approval workflows.
+2. **Address JPIDM/MIM architecture decision** — MIM reaches end-of-support in 2029. Since JPIDM uses MIM for specific credential operations, a decision is required: (a) **Decouple MIM from JPIDM** by replacing password reset/unlock and MIM sync with alternative implementations (e.g., Azure AD SSPR, Entra provisioning), allowing JPIDM to continue; or (b) **Replace the entire JPIDM platform** (ASP.NET MVC 4 portal, ADAccessor layer, workflow engine, MIM backend) with a modern solution. Either option must preserve all current JPIDM capabilities: FTE lifecycle, Japan contingent worker AD provisioning (via EINS feed), group/mailbox management, and approval workflows.
 3. **Establish a global FTE provisioning standard** — Deploy the new platform as the single, authoritative provisioning pipeline for full-time employees across all regions, consuming identity data from EINS (Global ID authority) and HR systems.
+
+### Expected Outcome
+
+#### Financial Goals
+
+| Fiscal Year | Avanade Cost Reduction Target | Cumulative Savings |
+|-------------|------------------------------|--------------------|
+| **FY26** (ends March 2027) | 20% reduction in Avanade payments | ¥20M/year |
+| **FY27** (ends March 2028) | Additional 50% reduction | ¥70M/year (cumulative) |
+| **FY28** (ends March 2029) | Full elimination (if replacement completed) | ¥100M/year (full savings) |
+
+> **Note:** Cost reduction trajectory depends on architecture decision (MIM decoupling vs. full replacement). Full ¥100M savings realized only if Avanade contract fully terminated.
+
+#### Team Build-Out (Product Management & AI DevOps)
+
+| Fiscal Year | Capability Milestone | Operational Transition |
+|-------------|---------------------|------------------------|
+| **FY26** (ends March 2027) | Functions established; FTE team hired and trained | 20% of operations transitioned |
+| **FY27** (ends March 2028) | Team operational; platform deployed | 70% of operations transitioned |
+| **FY28** (ends March 2029) | Full operational lifecycle ownership | 100% (Avanade eliminated) |
+
+> **Note:** Progressive transition from Avanade operations to EUSP in-house team enables cost reduction while building operational capability.
+
+#### End of FY26 (March 2027)
+- ✅ EUSP product management and AI DevOps functions established; FTE team hired and trained
+- ✅ AI DevOps practice and platform readiness: CI/CD pipeline established (build, test, deploy automation)
+- ✅ JPIDM/MIM architecture decision finalized (decouple vs. full replacement)
+- ✅ Platform selection completed (if full replacement chosen)
+- ✅ APIDM discovery completed; capabilities documented; migration plan defined
+- ✅ Target architecture validated: SCIM/API-driven provisioning design approved
+- ✅ Platform build/configuration started
+- ✅ EINS interface design confirmed (file-based data consumption from EINS)
+
+#### End of FY27 (March 2028)
+- ✅ EUSP product management and AI DevOps team operational; 70% of JPIDM operations transitioned from Avanade
+- ✅ Hypercare period initiated; EUSP operations team trained
+- ✅ Platform deployment to production environment completed
+- ✅ Japan FTE provisioning migrated: Castnet → EINS → New Platform/Modernized JPIDM → AD
+- ✅ Japan contingent worker provisioning migrated: EINS feed → New Platform/Modernized JPIDM → AD
+- ✅ If full replacement: Phase 1 JPIDM features migrated (group/mailbox management, workflows)
+- ✅ If MIM decoupling: Alternative password reset/unlock solution deployed (Azure AD SSPR or equivalent)
+
+#### End of FY28 (March 2029)
+- ✅ EUSP product management and AI DevOps team owns full operational lifecycle (deploy, monitor, support, enhance)
+- ✅ ¥100M/year operational savings realized (if Avanade terminated)
+- ✅ EUSP owns and operates the solution with full visibility and control
+- ✅ MIM 2029 end-of-support deadline met with zero technical debt
+- ✅ If full replacement: JPIDM platform fully decommissioned; Avanade contract terminated
+- ✅ If MIM decoupling: JPIDM continues with all MIM dependencies removed; MIM infrastructure decommissioned
+- ✅ APIDM accounts migrated; AP region standardized on new platform/modernized JPIDM
+- ✅ FTE provisioning standardized globally: Workday/Castnet → EINS → New Platform OR Modernized JPIDM → Entra ID / AD (JP + AP regions)
+- ⚠️ AM/EU/SM contingent workers remain on Passport (out of scope)
 
 ### Provisioning Pipeline Target
 
@@ -118,7 +174,7 @@ HR Systems (Workday, Castnet, ...)
 
 | Area | Detail |
 |------|--------|
-| **JPIDM full replacement** | Replace the entire JPIDM platform: web portal, AD operations layer (ADAccessor equivalent), approval workflow engine (Request_LST equivalent), MIM backend sync. This includes FTE lifecycle AND Japan contingent worker registration/provisioning. |
+| **JPIDM full replacement** | Replace the entire JPIDM platform: web portal, AD operations layer (ADAccessor equivalent), approval workflow engine (Request_LST equivalent), MIM backend sync. This includes FTE lifecycle AND Japan contingent worker registration/provisioning. **Note:** This is one option; alternatively, MIM can be decoupled from JPIDM without replacing the entire platform. |
 | **APIDM (TBD)** | Migrate APIDM-managed accounts to the new platform. *Note: APIDM capabilities are undocumented — a discovery phase is required before estimating effort.* |
 | **FTE account lifecycle** | Create, update, and deactivate full-time employee accounts automatically from HR/EINS data feed |
 | **Japan contingent worker lifecycle** | JPIDM currently receives the EINS feed and provisions AD accounts for Japan contingent workers. The new platform must preserve this capability: consume the EINS feed and provision AD accounts for contingent workers registered via EINS Online Registration. |
@@ -145,7 +201,7 @@ HR Systems (Workday, Castnet, ...)
 | Pros | Cons |
 |------|------|
 | Clear, manageable scope — minimal stakeholders | Leaves AM/EU/SM platform fragmentation (Passport) unresolved |
-| Directly addresses the 2029 MIM deadline | Two parallel provisioning paradigms remain (new platform + Passport) for AM/EU/SM |
+| Directly addresses the 2029 MIM deadline | Two parallel provisioning paradigms remain (chosen solution + Passport) for AM/EU/SM |
 | Removes Avanade cost dependency quickly | APIDM discovery gap — effort is currently unknown |
 | Realistic and deliverable within a 3-year window | No unified governance layer for access certification (would require separate IGA initiative) |
 | Keeps the project within EUSP authority — no need for cross-team governance | Japan contingent worker AD provisioning capability must be preserved in the replacement platform |
@@ -164,6 +220,72 @@ Expand the project scope to **all identity management platforms**, consolidating
 1. **Platform consolidation** — Integrate JPIDM, APIDM, and Passport into one unified provisioning and governance platform.
 2. **Address all identity types and regions** — Consistent lifecycle management for both FTE and contingent worker identities across all regions.
 3. **Simplify the landscape** — Reduce the total number of independent provisioning platforms from three (JPIDM, APIDM, Passport) to one.
+
+### Expected Outcome
+
+#### Financial Goals
+
+| Fiscal Year | Avanade Cost Reduction Target | Cumulative Savings |
+|-------------|------------------------------|--------------------|
+| **FY26** (ends March 2027) | 20% reduction in Avanade payments | ¥20M/year |
+| **FY27** (ends March 2028) | Additional 50% reduction | ¥70M/year (cumulative) |
+| **FY28** (ends March 2029) | Full elimination (Avanade contract terminated) | ¥100M/year (full savings) |
+| **FY29-FY30** | Additional Passport licensing savings (if fully replaced) | TBD (depends on Passport licensing costs) |
+
+> **Note:** FY26-FY27 reductions assume phased transition of JPIDM operations to EUSP. FY28 achieves full Avanade elimination once JPIDM/MIM fully replaced.
+
+#### Team Build-Out (Product Management & AI DevOps)
+
+| Fiscal Year | Capability Milestone | Operational Transition |
+|-------------|---------------------|------------------------|
+| **FY26** (ends March 2027) | Functions established; FTE team hired and trained | 20% of operations transitioned |
+| **FY27** (ends March 2028) | Team operational; platform deployed | 70% of operations transitioned |
+| **FY28** (ends March 2029) | Full operational lifecycle ownership | 100% (Avanade eliminated) |
+| **FY29-FY30** | Expanded scope (unified platform operations) | All regions/platforms under EUSP |
+
+> **Note:** Progressive transition from Avanade operations to EUSP in-house team enables cost reduction while building operational capability.
+
+#### End of FY26 (March 2027)
+- ✅ EUSP product management and AI DevOps functions established; FTE team hired and trained
+- ✅ AI DevOps practice and platform readiness: CI/CD pipeline established (build, test, deploy automation)
+- ✅ JPIDM/MIM architecture decision finalized
+- ✅ Unified platform selection completed (consolidation target identified)
+- ✅ APIDM discovery completed; capabilities documented
+- ✅ Cross-platform feature analysis completed (JPIDM, APIDM, Passport capabilities mapped)
+- ✅ Passport integration/migration strategy agreed with Ramnath's team
+- ✅ Steering committee established; cross-team governance model operational
+- ✅ Target architecture validated: SCIM/API-driven provisioning + unified governance
+
+#### End of FY27 (March 2028)
+- ✅ EUSP product management and AI DevOps team operational; 70% of JPIDM operations transitioned from Avanade
+- ✅ Unified platform deployed to production
+- ✅ Japan region migrated: FTE + contingent worker provisioning live on new platform
+- ✅ JPIDM decommissioned; MIM dependencies eliminated
+- ✅ AP region (APIDM) migrated to new platform
+- ✅ AM/EU/SM FTE provisioning migrated: Workday → EINS → New Platform → AD (bypassing Passport for FTE flow)
+- ✅ Phase 1 governance capabilities deployed (access certification for migrated populations)
+
+#### End of FY28 (March 2029)
+- ✅ EUSP product management and AI DevOps team owns full operational lifecycle (deploy, monitor, support, enhance)
+- ✅ MIM 2029 end-of-support deadline met
+- ✅ Avanade contract terminated; full EUSP operational ownership
+- ✅ AM/EU/SM contingent worker provisioning migration started (Passport → New Platform)
+- ✅ Service account lifecycle standardized across JP/AP/AM/EU/SM
+- ✅ Unified access governance operational for JP/AP/AM/EU/SM FTE populations
+
+#### End of FY29 (March 2030)
+- ✅ AM/EU/SM contingent worker provisioning fully migrated to new platform
+- ✅ Passport FTE + contingent worker flows decommissioned
+- ✅ Unified governance extended to all identity types (FTE, contingent, service accounts)
+
+#### End of FY30 (March 2031)
+- ✅ Passport platform fully decommissioned; licensing costs eliminated
+- ✅ All three legacy platforms (JPIDM, APIDM, Passport) retired
+- ✅ Single provisioning pipeline operational: Workday/Castnet → EINS → Unified Platform → Entra ID / AD (all regions)
+- ✅ Contingent worker provisioning unified: Single entry process → Unified Platform → AD (all regions)
+- ✅ Service account lifecycle: Centralized management across all regions
+- ✅ Unified access governance and certification capability across all regions and identity types
+- ✅ Total platform fragmentation resolved — one operating model, one team, one set of policies
 
 > **Architecture note (v2):** EINS is **excluded from consolidation** under both patterns. EINS is a global identity authority managing 100,000+ identity records across all Sony Group companies. It is structurally separate from provisioning platforms and is not owned by EUSP. Any attempt to replace EINS would require a separate, broader initiative beyond the scope of this project.
 
@@ -243,7 +365,7 @@ A **feature analysis** must be conducted to map current capabilities and define 
 
 ### Choose Pattern 1 if:
 
-- The primary near-term goal is addressing the **JPIDM end-of-life (MIM 2029 deadline) and Avanade dependency** within a realistic timeline.
+- The primary near-term goal is addressing the **MIM 2029 end-of-support deadline and Avanade dependency** within a realistic timeline. The organization must decide whether to decouple MIM from JPIDM or replace the entire platform.
 - The project team wants a **focused and deliverable scope** without requiring alignment across multiple teams and leadership chains.
 - Stakeholder engagement capacity is limited and a manageable project is a higher priority than a comprehensive one.
 - AM/EU/SM contingent worker management (Passport) is considered a separate, later initiative.
@@ -279,7 +401,7 @@ This revision was produced in consultation with the Platform Expert agent, which
 |----------|-------------|
 | `knowledge/platforms/EINS.md` | EINS is global (not JP-only); is identity record authority only; does not provision accounts |
 | `knowledge/platforms/JPIDM.md` | JPIDM is the provisioning system for Japan, including contingent workers |
-| `knowledge/platforms/JPIDM/ARCHITECTURE.md` | JPIDM core = ASP.NET MVC 4 + SQL Server + ADAccessor; MIM is backend sync only |
+| `knowledge/platforms/JPIDM/ARCHITECTURE.md` | JPIDM core = ASP.NET MVC 4 + SQL Server + ADAccessor; MIM is backend sync component only; JPIDM ≠ MIM (architecturally independent) |
 | `knowledge/platforms/JPIDM/FEATURES.md` | IDM Web self-registration (IDM Web forms) is for shared/resource objects only — not people; Japan contingent worker AD accounts are provisioned by JPIDM via EINS feed, not via IDM Web forms; password reset handled outside JPIDM |
 | `knowledge/platforms/JPIDM/SYSTEM_CONTEXT.md` | JPIDM reads from EINS/GHD tables; writes to JP.SONY.COM AD and Exchange |
 | `knowledge/platforms/JPIDM/RELATIONSHIPS.md` | JPIDM does not replace EINS or Passport; each serves a distinct architectural role |

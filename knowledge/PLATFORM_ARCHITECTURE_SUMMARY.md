@@ -30,7 +30,13 @@
 | **Downstream targets** | Writes to on-prem AD (JP.SONY.COM), Exchange |
 | **Populations managed** | FTE (Japan); contingent workers (Japan — receives EINS feed, provisions AD account); service/shared accounts; computer accounts; resource accounts |
 
-> **Note:** The JPIDM core is the **ASP.NET MVC 4 web portal + ADAccessor layer + SQL Server**. MIM is backend sync infrastructure only. Replacing JPIDM means replacing the entire platform (portal, workflow engine, AD operations layer, MIM sync) — not MIM alone.
+> **Note:** The JPIDM core is the **ASP.NET MVC 4 web portal + ADAccessor layer + SQL Server**. MIM is backend sync infrastructure only.
+>
+> **JPIDM ≠ MIM**: JPIDM uses MIM as a backend component, but they are architecturally independent. **MIM decommissioning does not automatically mean JPIDM decommissioning**. Organizations have two options:
+> 1. **Decouple MIM from JPIDM**: Replace MIM-dependent features (password reset/unlock) with alternative implementations; retain JPIDM platform
+> 2. **Replace both**: Replace the entire JPIDM platform including MIM as part of a comprehensive modernization
+>
+> The MIM 2029 end-of-support deadline requires a decision between these options, but does not mandate full JPIDM replacement.
 
 ---
 
