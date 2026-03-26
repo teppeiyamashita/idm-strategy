@@ -12,7 +12,7 @@ Our organisation manages approximately **110,000 identities** across multiple re
 
 | Driver | Detail |
 |--------|--------|
-| **Vendor dependency** | JPIDM operations are currently outsourced to **Avana**. Removing this dependency will reduce cost (currently approximately ¥100 million/year) and increase EUSP control. |
+| **Vendor dependency** | JPIDM operations are currently outsourced to **Avanade**. Removing this dependency will reduce cost (currently approximately ¥100 million/year) and increase EUSP control. |
 | **MIM end-of-support** | Microsoft Identity Manager (MIM), the core engine of JPIDM, reaches end of support in **2029** (within 3 years). A replacement strategy must be in place before that date. |
 | **Platform fragmentation** | Workforce provisioning is handled differently across regions: JPIDM (JP), Passport (AM/EU), APIDM (AP). There is no consistent, global provisioning pipeline. |
 | **Global standardisation** | EUSP aims to establish a new platform as the **global standard** for workforce identity provisioning so that all regions and GIC-managed teams can provision employees through one consistent pipeline. |
@@ -34,11 +34,11 @@ Our organisation manages approximately **110,000 identities** across multiple re
 
 ### Overview
 
-Limit the project scope to **EUSP-managed platforms** — primarily JPIDM and APIDM. The immediate goal is to migrate JPIDM off MIM and Avana dependency while simultaneously establishing a global standard provisioning pipeline for **full-time employees only**.
+Limit the project scope to **EUSP-managed platforms** — primarily JPIDM and APIDM. The immediate goal is to migrate JPIDM off MIM and Avanade dependency while simultaneously establishing a global standard provisioning pipeline for **full-time employees only**.
 
 ### Goals
 
-1. **Remove Avana dependency** — Bring JPIDM operations fully in-house to EUSP, eliminating approximately ¥100 million/year in Avana operational costs.
+1. **Remove Avanade dependency** — Bring JPIDM operations fully in-house to EUSP, eliminating approximately ¥100 million/year in Avanade operational costs.
 2. **Address MIM end-of-support** — Replace Microsoft Identity Manager as the core JPIDM engine before the 2029 deadline.
 3. **Establish a global FTE provisioning standard** — Deploy the new platform as the single, authoritative provisioning pipeline for full-time employees across all regions. All GIC-managed teams should be able to provision employees via this platform.
 
@@ -63,7 +63,7 @@ HR Systems (Workday, Castnet, ...)
 | APIDM | Migrate APIDM-managed accounts onto the new platform |
 | FTE account lifecycle | Create, update, and deactivate full-time employee accounts automatically from HR feed |
 | Global provisioning standard | New platform becomes the authoritative source for provisioning FTEs into Entra ID and on-premises AD across all regions |
-| Avana offboarding | End Avana contract and operational dependency |
+| Avanade offboarding | End Avanade contract and operational dependency |
 
 ### Out of Scope
 
@@ -87,7 +87,7 @@ HR Systems (Workday, Castnet, ...)
 |------|------|
 | Clear, manageable scope — minimal stakeholders | Leaves contingent worker and non-EUSP platform fragmentation unresolved |
 | Directly addresses the 2029 MIM deadline | Ramnath's teams still operate separate platforms in parallel |
-| Removes Avana cost dependency quickly | No single global platform across all identity types |
+| Removes Avanade cost dependency quickly | No single global platform across all identity types |
 | Realistic and deliverable within a 3-year window | Potential integration complexity if a broader scope is adopted later |
 | Keeps the project within EUSP authority — no need for cross-team governance | |
 
@@ -167,7 +167,7 @@ The analysis must clarify:
 | Platforms in scope | JPIDM, APIDM | JPIDM, APIDM, EINS, SailPoint/Passport |
 | Identity types | FTE only | FTE + Contingent workers |
 | Resolves MIM 2029 deadline | ✅ Yes | ✅ Yes |
-| Removes Avana dependency | ✅ Yes | ✅ Yes |
+| Removes Avanade dependency | ✅ Yes | ✅ Yes |
 | Covers contingent workers | ❌ No | ✅ Yes |
 | Number of stakeholder teams | Low (EUSP + HR + Regional IT) | High (+ Ramnath's team, EINS team, steering committee) |
 | Project complexity | Low | High |
@@ -182,7 +182,7 @@ The analysis must clarify:
 
 ### Choose Pattern 1 if:
 
-- The primary near-term goal is addressing the **MIM 2029 deadline and Avana dependency** within a realistic timeline.
+- The primary near-term goal is addressing the **MIM 2029 deadline and Avanade dependency** within a realistic timeline.
 - The project team wants a **focused and deliverable scope** without requiring alignment across multiple teams and leadership chains.
 - Stakeholder engagement capacity is limited and a manageable project is a higher priority than a comprehensive one.
 - Contingent worker identity management is considered a separate, later initiative.
@@ -202,7 +202,7 @@ Regardless of which pattern is selected, the following actions apply:
 
 1. **Confirm the selected pattern** with project sponsors and key stakeholders.
 2. **Initiate MIM replacement evaluation** — assess candidate platforms (SailPoint, custom, or other) against JPIDM functional requirements.
-3. **Map Avana contract timeline** — align the Avana offboarding plan with the new platform go-live.
+3. **Map Avanade contract timeline** — align the Avanade offboarding plan with the new platform go-live.
 4. **Establish the FTE provisioning pipeline design** — define the data flow from Workday/Castnet to Entra ID and on-premises AD.
 5. *(Pattern 2 only)* **Commission a cross-platform feature analysis** — inventory capabilities across JPIDM, EINS, and SailPoint/Passport to inform consolidation target selection.
 

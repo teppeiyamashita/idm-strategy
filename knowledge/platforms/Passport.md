@@ -3,6 +3,17 @@
 
 ---
 
+## Ownership & Responsibility
+
+| Aspect | Team/Location |
+|--------|---------------|
+| **Platform Ownership** | Cloud App Team (lead by Ramnath) |
+| **Management Team** | US East Coast (Jorge) |
+| **Operations Team** | SISC India (Sony India Software Center) |
+| **Regional Scope** | Americas (AM), EMEA/EU, SM regions |
+
+---
+
 ## 1. Executive Summary
 
 Passport is Sony’s **SailPoint IdentityIQ–based Identity and Access Management (IAM) platform** used primarily in **AM, EU, and SM regions**. Its role varies significantly depending on worker type:

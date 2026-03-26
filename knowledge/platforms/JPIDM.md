@@ -3,6 +3,24 @@
 
 ---
 
+## Ownership & Responsibility
+
+| Aspect | Team/Vendor |
+|--------|-------------|
+| **Platform Ownership** | EUSP Japan Team |
+| **Operations** | Avanade (outsourced) |
+| **Cost** | ~¥100 million/year (Avanade operational costs) |
+
+### Relationship to APIDM
+
+JPIDM and **APIDM** (Asia-Pacific Identity Management) are **separate Microsoft Identity Manager (MIM) instances**:
+- **JPIDM**: Japan region
+- **APIDM**: Asia-Pacific region
+
+> ⚠️ **APIDM is undocumented** in this knowledge base. Capabilities, technical stack, ownership, and migration complexity are unknown and require investigation.
+
+---
+
 ## 1. Purpose of This Document
 
 This document describes **JPIDM as it exists today**, based **only on authoritative SharePoint-hosted operational materials**.

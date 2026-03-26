@@ -1,7 +1,7 @@
 ---
 description: 'Expert on existing identity platforms: EINS, JPIDM, and Passport (SailPoint). Answers questions about architecture, features, scope, and integration of all three platforms.'
 name: 'Platform Expert'
-tools: ['read', 'search', 'editFiles', 'codebase']
+tools: ['read', 'search']
 model: 'Claude Sonnet 4.5'
 target: 'vscode'
 ---

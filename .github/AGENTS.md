@@ -60,7 +60,31 @@ PMO Manager produces complete business case, roadmap, and Phase 1 execution plan
 
 **Knowledge Base**: `knowledge/platforms/` and `knowledge/Landscape.md`
 
-**Typical Collaborators**: Identity Architect (feeds current-state into architecture design), Transformation Strategist (feeds current-state into gap analysis), Product Specialist - Identity (informs platform comparison)
+**Typical Collaborators**: Identity Architect (feeds current-state into architecture design), Transformation Strategist (feeds current-state into gap analysis), Product Specialist - Identity (informs platform comparison), **Knowledge Manager** (maintains and updates the knowledge base itself)
+
+---
+
+### 0.6 Knowledge Manager
+**Specialty**: CRUD operations on the knowledge base under `knowledge/`
+
+**Use When**:
+- Adding a new platform or system to the knowledge base
+- Correcting a factual error in an existing knowledge file (e.g. wrong vendor name, outdated architecture)
+- Updating platform documentation after a system change
+- Checking what is and is not documented in the knowledge base
+- Structuring new knowledge from raw notes, exports, or conversations into a proper knowledge file
+- Keeping `IDENTITY_PLATFORM_FEATURE_MAP.md` in sync with individual platform files
+
+**Key Expertise**:
+- Knowledge base structure and file conventions
+- Creating well-structured Markdown platform documentation
+- Cross-file consistency (feature map vs. individual platform files)
+- Identifying and flagging documentation gaps
+- Safe deprecation/deletion of outdated content
+
+**Scope**: `knowledge/` directory only. Does not modify strategy documents or agent files.
+
+**Typical Collaborators**: Platform Expert (reads the knowledge base), all other agents (benefit from accurate knowledge)
 
 ---
 
@@ -280,6 +304,12 @@ Used when user wants to coordinate agents individually rather than through PMO o
 
 ### Question: "What does EINS / JPIDM / Passport actually do today?"
 → **Platform Expert** (authoritative current-state platform knowledge)
+
+### Question: "Add / update / fix something in the knowledge base?"
+→ **Knowledge Manager** (CRUD operations on `knowledge/`)
+
+### Question: "What is or isn't documented in our knowledge base?"
+→ **Knowledge Manager** (reads and reports on knowledge base coverage)
 
 ### Question: "How do we solve this complex organizational & technical problem?"
 → **Transformation Strategist** (diagnoses root causes and org structure needs)

@@ -2,6 +2,16 @@
 
 ---
 
+## Ownership & Responsibility
+
+| Aspect | Team/Location |
+|--------|---------------|
+| **Platform Ownership** | Cloud App Team (lead by Ramnath) |
+| **Management Team** | Japan |
+| **Operations Team** | Dalian, China |
+
+---
+
 ### 2.2 Relationship to HR Systems
 
 EINS **does not replace HR systems**.
