@@ -4,7 +4,7 @@
 
 This document is a revised version of the IDM Strategy Scoping document, enriched with authoritative current-state platform knowledge sourced from the Platform Expert knowledge base (`knowledge/platforms/`). Corrections and clarifications from the original version are annotated where relevant.
 
-Our organisation manages approximately **110,000 identities** across multiple regions. Today these identities are managed by several independent platforms and teams worldwide, creating inconsistency and operational risk. This project seeks to establish a modern, sustainable IDM platform as the foundation for workforce identity management going forward.
+Our organisation manages approximately **130,000 identities** across multiple regions. Today these identities are managed by several independent platforms and teams worldwide, creating inconsistency and operational risk. This project seeks to establish a modern, sustainable IDM platform as the foundation for workforce identity management going forward.
 
 > **Revision notes (v2):** Three significant factual corrections have been made based on authoritative platform documentation:
 > 1. EINS is a **global** platform (not Japan-only). Its role is identity record authority and Global ID issuance — it does **not** provision accounts.
